@@ -3,7 +3,7 @@
 //
 
 #include <QApplication>
-#include <QMainWindow>
+#include "mainwindow.h"
 
 int main(int argc, char** argv) {
 #ifdef Q_OS_ANDROID
@@ -15,7 +15,7 @@ int main(int argc, char** argv) {
     QCoreApplication::setApplicationName("Application Example");
     QCoreApplication::setApplicationVersion(QT_VERSION_STR);
 
-    QMainWindow mainWin;
+    MainWindow mainWin;
     mainWin.show();
     return QApplication::exec();
 }

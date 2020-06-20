@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 project(physicsc4)
 
-set(Qt5_DIR "D:\\Qt\\5.12.6\\msvc2017_64\\lib\\cmake\\Qt5" CACHE PATH "Initial cache" FORCE)
-
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
@@ -11,7 +9,9 @@ set(CMAKE_CXX_STANDARD 17)
 find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)
 
 add_executable(physicsc4
-        src/ui/MainWindow.cpp
+        src/ui/main.cpp
+        src/ui/mainwindow.cpp
+        src/ui/mainwindow.ui
         )
 
 target_link_libraries(physicsc4 Qt5::Core Qt5::Gui Qt5::Widgets)
