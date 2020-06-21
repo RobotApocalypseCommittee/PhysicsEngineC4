@@ -1,7 +1,3 @@
-//
-// Created by Attoa on 20/06/2020.
-//
-
 #include <QApplication>
 #include "mainwindow.h"
 #include "physics/object.h"

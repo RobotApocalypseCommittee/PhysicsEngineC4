@@ -1,6 +1,2 @@
-#include "physics/object.h"
-
-void hello() {
-    // Do nothing
-}
-
+#include "physics/shape.h"
+#include "physics/core.h"
