@@ -10,7 +10,7 @@ namespace physics {
 
     void handle_circle_collision(Circle& obj1, Circle& obj2);
 
-    float calculate_impulse(Vec2 vel_12, Vec2 normal, float mass1, float mass2, float e = 1);
+    float calculate_impulse(Vec2 vel_12, Vec2 normal, float mass1, float mass2, float e);
 }
 
 #endif //PHYSICS_C4_COLLISION_H
