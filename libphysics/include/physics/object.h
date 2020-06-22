@@ -8,7 +8,9 @@ namespace physics {
 
     class Object {
         Shape* shape;
-
+        Vec2 vel;
+        float mass;
+        Vec2 pos;
     };
 
 }

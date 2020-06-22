@@ -1,6 +1,6 @@
 project(libphysics-c4 LANGUAGES CXX)
 
-add_library(libphysics-c4 src/main.cpp src/circle.cpp src/core.cpp)
+add_library(libphysics-c4 src/main.cpp src/physics/collision.cpp src/physics/utils.cpp src/core.cpp)
 
 add_library(PhysicsEngineC4::physics ALIAS libphysics-c4)
 
