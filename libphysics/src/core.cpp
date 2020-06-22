@@ -37,9 +37,13 @@ namespace physics {
         return x * b.x + y * b.y;
     }
 
-    Vec2::Vec2(): x(0), y(0) {}
+    Vec2::Vec2() : x(0), y(0) {}
 
     Vec2 Vec2::operator/(float s) const {
-        return {x/s, y/s};
+        return {x / s, y / s};
+    }
+
+    bool AABB::intersects(const AABB other) const {
+        return !(other.max.x < min.x || other.min.x > max.x || other.max.y < min.y || other.min.y > max.y);
     }
 }

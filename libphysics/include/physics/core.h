@@ -15,6 +15,7 @@ namespace physics {
         Vec2 operator *(float s) const;
         float operator *(Vec2 b) const;
         Vec2 operator /(float s) const;
+
         float magnitude() const;
         Vec2 normalized() const;
     };
@@ -27,6 +28,8 @@ namespace physics {
 
     struct AABB {
         Vec2 min, max;
+
+        bool intersects(AABB other) const;
     };
 
 };

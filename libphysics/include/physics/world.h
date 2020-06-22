@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <vector>
+#include <array>
 #include "physics/object.h"
 
 namespace physics {
@@ -14,6 +15,7 @@ namespace physics {
 
     private:
         std::vector<std::shared_ptr<Object>> objects;
+        std::vector<std::array<std::shared_ptr<Object>, 2>> combinations;
     };
 };
 
