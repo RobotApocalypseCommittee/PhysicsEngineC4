@@ -12,6 +12,7 @@ namespace physics {
         Vec2 operator+(Vec2 b) const;
         Vec2 operator-(Vec2 b) const;
         Vec2 operator *(float s) const;
+        float operator *(Vec2 b) const;
     };
 
     struct Mat2x2 {
