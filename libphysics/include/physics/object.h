@@ -8,6 +8,7 @@ namespace physics {
 
     class Object {
         unsigned int id;
+    public:
         Vec2 vel;
         float mass;
         Vec2 pos;

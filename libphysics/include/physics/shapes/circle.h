@@ -7,9 +7,11 @@
 namespace physics {
     class Circle : public Object {
         explicit Circle(float radius);
+
+    public:
         float radius;
 
-        AABB getAABB() override;
+        //AABB getAABB() override;
     };
 }
 

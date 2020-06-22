@@ -11,7 +11,6 @@ int main(int argc, char** argv) {
     QCoreApplication::setOrganizationName("QtProject");
     QCoreApplication::setApplicationName("Application Example");
     QCoreApplication::setApplicationVersion(QT_VERSION_STR);
-    hello();
     MainWindow mainWin;
     mainWin.show();
     return QApplication::exec();

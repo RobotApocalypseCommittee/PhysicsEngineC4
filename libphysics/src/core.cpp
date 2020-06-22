@@ -25,6 +25,10 @@ namespace physics {
         return {x * s, y * s};
     }
 
+    Vec2 Vec2::operator/(float s) const {
+        return {x * s, y * s};
+    }
+
     float distance(Vec2 a, Vec2 b) {
         return (a-b).magnitude();
     }
