@@ -28,4 +28,9 @@ namespace physics {
     float distance(Vec2 a, Vec2 b) {
         return (a-b).magnitude();
     }
+
+    float Vec2::operator*(Vec2 b) const {
+        // Dot product of two column matrices
+        return x * b.x + y * b.y;
+    }
 }
