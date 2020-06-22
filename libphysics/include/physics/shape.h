@@ -2,6 +2,8 @@
 #ifndef PHYSICS_C4_SHAPE_H
 #define PHYSICS_C4_SHAPE_H
 
+#include "core.h"
+
 namespace physics {
 
     struct AABB {
