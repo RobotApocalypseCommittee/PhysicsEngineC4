@@ -17,9 +17,10 @@ namespace physics {
         }
 
         Vec2 vel_12 = obj1.vel - obj2.vel;
-        Vec2 normal = {obj1.pos.x - obj2.pos.x, obj1.pos.y - obj2.pos.y};
+        // Only works because circles
+        Vec2 normal = obj1.pos - obj2.pos;
 
-        float impulse = calculate_impulse(vel_12, normal, obj1.mass, obj2.mass);
+        float impulse = calculate_impulse(vel_12, normal, obj1.mass, obj2.mass, 1);
         obj1.vel = obj1.vel + normal * impulse/obj1.mass;
         obj2.vel = obj2.vel - normal * impulse/obj2.mass;
     }
