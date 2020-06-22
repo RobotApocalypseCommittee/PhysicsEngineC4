@@ -7,10 +7,12 @@
 namespace physics {
 
     class Object {
-        Shape* shape;
+        unsigned int id;
         Vec2 vel;
         float mass;
         Vec2 pos;
+
+        virtual AABB getAABB() const;
     };
 
 }

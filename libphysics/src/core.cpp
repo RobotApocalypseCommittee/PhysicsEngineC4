@@ -33,4 +33,6 @@ namespace physics {
         // Dot product of two column matrices
         return x * b.x + y * b.y;
     }
+
+    Vec2::Vec2(): x(0), y(0) {}
 }
