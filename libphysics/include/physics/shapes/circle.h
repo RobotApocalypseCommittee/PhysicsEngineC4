@@ -5,11 +5,15 @@
 #include <physics/object.h>
 
 namespace physics {
-    class Circle : public Object {
+    class Circle final: public Object {
+    public:
         explicit Circle(float radius);
+
+        AABB getAABB() const override;
+
         float radius;
 
-        AABB getAABB() override;
+
     };
 }
 

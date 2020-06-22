@@ -1,4 +1,7 @@
 #include <cmath>
+#include <physics/world.h>
+
+
 #include "physics/core.h"
 
 namespace physics {
@@ -35,4 +38,8 @@ namespace physics {
     }
 
     Vec2::Vec2(): x(0), y(0) {}
+
+    Vec2 Vec2::operator/(float s) const {
+        return {x/s, y/s};
+    }
 }

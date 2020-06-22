@@ -2,17 +2,19 @@
 #ifndef PHYSICS_C4_OBJECT_H
 #define PHYSICS_C4_OBJECT_H
 
-#include "shape.h"
+#include "physics/core.h"
 
 namespace physics {
 
     class Object {
-        unsigned int id;
+    public:
+        virtual AABB getAABB() const = 0;
+        Vec2 pos;
         Vec2 vel;
         float mass;
-        Vec2 pos;
+    protected:
 
-        virtual AABB getAABB() const;
+        unsigned int id;
     };
 
 }

@@ -14,6 +14,7 @@ namespace physics {
         Vec2 operator-(Vec2 b) const;
         Vec2 operator *(float s) const;
         float operator *(Vec2 b) const;
+        Vec2 operator /(float s) const;
         float magnitude() const;
         Vec2 normalized() const;
     };
@@ -22,6 +23,10 @@ namespace physics {
 
     struct Mat2x2 {
         float a, b, c, d;
+    };
+
+    struct AABB {
+        Vec2 min, max;
     };
 
 };
