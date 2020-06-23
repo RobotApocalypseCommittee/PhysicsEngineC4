@@ -163,10 +163,10 @@
         </property>
        </widget>
       </item>
-      <item row="12" column="1">
+      <item row="13" column="1">
        <widget class="QPushButton" name="testButton">
         <property name="text">
-         <string>Test</string>
+         <string>Initialise Shapes</string>
         </property>
        </widget>
       </item>
@@ -195,6 +195,27 @@
        <widget class="QLineEdit" name="c2RadiusLineEdit">
         <property name="text">
          <string>2</string>
+        </property>
+       </widget>
+      </item>
+      <item row="12" column="1">
+       <widget class="QLineEdit" name="stepsLineEdit">
+        <property name="text">
+         <string>100</string>
+        </property>
+       </widget>
+      </item>
+      <item row="12" column="0">
+       <widget class="QLabel" name="label_13">
+        <property name="text">
+         <string>Steps</string>
+        </property>
+       </widget>
+      </item>
+      <item row="14" column="1">
+       <widget class="QPushButton" name="stepButton">
+        <property name="text">
+         <string>Step</string>
         </property>
        </widget>
       </item>

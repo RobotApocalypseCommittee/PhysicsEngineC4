@@ -51,15 +51,26 @@ void MainWindow::on_testButton_pressed() {
     circ1->vel = {c1XVel, c1YVel};
     circ2->vel = {c2XVel, c2YVel};
 
-    auto *world = new physics::World();
+    world = new physics::World();
     world->addObject(circ1);
     world->addObject(circ2);
+}
 
-    float timestep = 1e-4;
-    for (int i = 0; i < 10000; i++) {
+void MainWindow::on_stepButton_pressed() {
+    float timestep = 1e-4f;
+    bool ok = true;
+    int steps = findChild<QLineEdit *>("stepsLineEdit")->text().toInt(&ok);
+
+    if (!ok) {
+        auto errorMessage = new QErrorMessage(this);
+        errorMessage->showMessage("Luhmao");
+        return;
+    }
+
+    for (int i = 0; i < steps; i++) {
         world->step(timestep);
 
-        printf("circle 1 Pos: x: %f, y: %f\n", circ1->pos.x, circ1->pos.y);
-        printf("circle 2 Pos: x: %f, y: %f\n\n", circ2->pos.x, circ2->pos.y);
+        //printf("circle 1 Pos: x: %f, y: %f\n", circ1->pos.x, circ1->pos.y);
+        //printf("circle 2 Pos: x: %f, y: %f\n\n", circ2->pos.x, circ2->pos.y);
     }
 }
