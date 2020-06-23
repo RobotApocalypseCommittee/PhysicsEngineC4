@@ -11,11 +11,14 @@ namespace physics {
         // TODO deal with forces
 
         for (const std::shared_ptr<Object> &object : objects) {
-            // if we had accel from forces, do suvat: s = ut + 1/2 at^2
+            //Calculate acceleration from resultant force - Newton 2
+            object->acc = object->force / object->mass;
 
-            object->pos = object->pos + object->vel * deltaTime;
+            // suvat
+            object->pos = object->pos + object->vel * deltaTime + object->acc * deltaTime * deltaTime * 0.5f;
 
             // if we had accel, change velocity with v = u + at
+            object->vel = object->vel + object->acc * deltaTime;
         }
 
         // Todo make better (if possible)

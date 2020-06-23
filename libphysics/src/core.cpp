@@ -16,6 +16,10 @@ namespace physics {
         return std::sqrtf(x*x + y*y);
     }
 
+    float Vec2::sqrMagnitude() const {
+        return x*x + y*y;
+    }
+
     Vec2 Vec2::normalized() const {
         return {x/magnitude(), y/magnitude()};
     }

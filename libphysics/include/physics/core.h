@@ -17,6 +17,7 @@ namespace physics {
         Vec2 operator /(float s) const;
 
         float magnitude() const;
+        float sqrMagnitude() const;
         Vec2 normalized() const;
     };
 

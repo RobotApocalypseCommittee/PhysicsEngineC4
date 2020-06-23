@@ -11,6 +11,8 @@ namespace physics {
         virtual AABB getAABB() const = 0;
         Vec2 pos;
         Vec2 vel;
+        Vec2 acc;
+        Vec2 force;
         float mass;
     protected:
 
