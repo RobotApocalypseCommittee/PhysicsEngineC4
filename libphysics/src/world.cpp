@@ -12,13 +12,20 @@ namespace physics {
 
         for (const std::shared_ptr<Object> &object : objects) {
             //Calculate acceleration from resultant force - Newton 2
-            object->acc = object->force / object->mass;
+            Vec2 acceleration = object->force / object->mass;
 
             // suvat
-            object->pos = object->pos + object->vel * deltaTime + object->acc * deltaTime * deltaTime * 0.5f;
+            object->pos += object->vel * deltaTime + acceleration * deltaTime * deltaTime * 0.5f;
 
             // if we had accel, change velocity with v = u + at
-            object->vel = object->vel + object->acc * deltaTime;
+            object->vel += acceleration * deltaTime;
+
+            // Now for rotation
+            float rotAcc = object->torque / object->momentOfInertia;
+
+            object->rot += object->angVel * deltaTime + rotAcc * deltaTime * deltaTime * 0.5f;
+
+            object->angVel += rotAcc * deltaTime;
         }
 
         // Todo make better (if possible)

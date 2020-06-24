@@ -51,6 +51,18 @@ namespace physics {
         return {y, -x};
     }
 
+    Vec2& Vec2::operator+=(Vec2 b) {
+        x += b.x;
+        y += b.y;
+        return *this;
+    }
+
+    Vec2 &Vec2::operator-=(Vec2 b) {
+        x -= b.x;
+        y -= b.y;
+        return *this;
+    }
+
     bool AABB::intersects(const AABB other) const {
         return !(other.max.x < min.x || other.min.x > max.x || other.max.y < min.y || other.min.y > max.y);
     }

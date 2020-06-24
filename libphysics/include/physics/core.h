@@ -19,6 +19,9 @@ namespace physics {
         float operator *(Vec2 b) const;
         Vec2 operator /(float s) const;
 
+        Vec2& operator +=(Vec2 b);
+        Vec2& operator -=(Vec2 b);
+
         float magnitude() const;
         float sqrMagnitude() const;
 
