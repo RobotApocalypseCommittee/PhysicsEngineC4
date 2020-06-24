@@ -2,10 +2,13 @@
 #ifndef PHYSICS_C4_CORE_H
 #define PHYSICS_C4_CORE_H
 
+#define M_PI 3.14159265358979323846
+
 namespace physics {
 
     struct Vec2 {
         Vec2(float x, float y);
+
         Vec2();
 
         float x, y;
@@ -18,7 +21,10 @@ namespace physics {
 
         float magnitude() const;
         float sqrMagnitude() const;
+
         Vec2 normalized() const;
+
+        Vec2 perpendicular() const;
     };
 
     float distance(Vec2, Vec2);

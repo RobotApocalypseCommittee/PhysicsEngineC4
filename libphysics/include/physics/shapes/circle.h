@@ -13,7 +13,6 @@ namespace physics {
 
         float radius;
 
-
     };
 }
 

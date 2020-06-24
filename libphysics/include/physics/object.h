@@ -9,11 +9,14 @@ namespace physics {
     class Object {
     public:
         virtual AABB getAABB() const = 0;
+
         Vec2 pos;
         Vec2 vel;
         Vec2 acc;
         Vec2 force;
         float mass;
+        float momentOfInertia;
+        float angVel;
     protected:
 
         unsigned int id;

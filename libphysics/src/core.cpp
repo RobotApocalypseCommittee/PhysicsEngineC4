@@ -47,6 +47,10 @@ namespace physics {
         return {x / s, y / s};
     }
 
+    Vec2 Vec2::perpendicular() const {
+        return {y, -x};
+    }
+
     bool AABB::intersects(const AABB other) const {
         return !(other.max.x < min.x || other.min.x > max.x || other.max.y < min.y || other.min.y > max.y);
     }
