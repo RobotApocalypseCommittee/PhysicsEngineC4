@@ -13,6 +13,6 @@ namespace physics {
         this->addForce(force);
         Vec2 pointRelative = point - pos;
         // Dot product of 'perpendicular distance' & force
-        this->addTorque(pointRelative.x * force.y - pointRelative.y * force.x);
+        this->addTorque(pointRelative.perpendicular() * force);
     }
 }
