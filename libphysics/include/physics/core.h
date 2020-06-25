@@ -20,7 +20,9 @@ namespace physics {
         Vec2 operator /(float s) const;
 
         Vec2& operator +=(Vec2 b);
-        Vec2& operator -=(Vec2 b);
+        Vec2 &operator-=(Vec2 b);
+
+        Vec2 &operator/=(float s);
 
         float magnitude() const;
         float sqrMagnitude() const;
@@ -50,6 +52,21 @@ namespace physics {
         bool intersects(Projection other) const;
 
         float intersection(Projection other) const;
+    };
+
+    struct LineSegment {
+        explicit LineSegment();
+
+        explicit LineSegment(Vec2 inStart, Vec2 inEnd);
+
+        bool operator==(LineSegment b) const;
+
+        Vec2 start, end;
+        AABB aabb;
+
+        bool intersects(LineSegment other, Vec2 &intersection) const;
+
+        bool intersects(LineSegment other) const;
     };
 
     bool intersection(Vec2 start1, Vec2 end1, Vec2 start2, Vec2 end2, Vec2 &out);

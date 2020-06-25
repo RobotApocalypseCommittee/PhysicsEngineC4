@@ -2,6 +2,7 @@
 
 #include <utility>
 #include <iostream>
+#include <algorithm>
 
 namespace physics {
 
@@ -102,5 +103,96 @@ namespace physics {
             }
         }
         return projection;
+    }
+
+    void Polygon::handle_collision_alt(Polygon &obj1, Polygon &obj2) {
+        // This assumes the polygons' AABBs have already been checked
+
+        auto obj1TPoints = obj1.transformedPoints();
+        std::vector<LineSegment> obj1Edges(obj1.points.size() - 1);
+        for (int i = 0; i < obj1TPoints.size() - 1; i++) {
+            obj1Edges[i] = (LineSegment(obj1TPoints[i], obj1TPoints[i + 1]));
+        }
+
+        auto obj2TPoints = obj2.transformedPoints();
+        std::vector<LineSegment> obj2Edges(obj2.points.size() - 1);
+        for (int i = 0; i < obj2TPoints.size() - 1; i++) {
+            obj2Edges[i] = (LineSegment(obj2TPoints[i], obj2TPoints[i + 1]));
+        }
+
+        std::vector<Vec2> intersections;
+        std::vector<LineSegment> edgesIntersected;
+
+        // Assumes only one edge can be intersected - will NOT work for concave bois
+        LineSegment edgeIntersected;
+        Polygon *polygonWithoutEdge;
+
+        for (LineSegment edge1 : obj1Edges) {
+            for (LineSegment edge2 : obj2Edges) {
+                // This might be worse than this not existing, we'll have to test
+                if (!edge1.aabb.intersects(edge2.aabb)) continue;
+
+                Vec2 intersection;
+                if (edge1.intersects(edge2, intersection)) {
+                    intersections.push_back(intersection);
+
+                    // The logic here is that if it's intersected twice, it's the edge being hit
+                    // Definitely a better way of doing this, but I am tired
+                    if (std::count(edgesIntersected.begin(), edgesIntersected.end(), edge1)) {
+                        edgeIntersected = edge1;
+                        polygonWithoutEdge = &obj2;
+                        goto outsideFor;
+                    }
+                    if (std::count(edgesIntersected.begin(), edgesIntersected.end(), edge2)) {
+                        edgeIntersected = edge2;
+                        polygonWithoutEdge = &obj1;
+                        goto outsideFor;
+                    }
+
+                    edgesIntersected.push_back(edge1);
+                    edgesIntersected.push_back(edge2);
+                }
+            }
+        }
+
+        outsideFor:
+        if (intersections.empty()) return;
+        if (polygonWithoutEdge == nullptr) {
+            std::cout << "On no! No edge found?" << std::endl;
+            return;
+        }
+
+        std::cout << "Collision!!!!" << std::endl;
+        // They did intersect!
+        // I just take a mean because I have no better method as yet
+        Vec2 intersection;
+        for (auto &i : intersections) {
+            intersection += i;
+        }
+        intersection /= intersections.size();
+
+        Vec2 normal = Vec2(edgeIntersected.end.x - edgeIntersected.start.x,
+                           edgeIntersected.end.y - edgeIntersected.start.y).perpendicular();
+        Vec2 vel_12 = obj1.vel - obj2.vel;
+
+        if ((intersection + normal - polygonWithoutEdge->pos).sqrMagnitude() >
+            (intersection - normal - polygonWithoutEdge->pos).sqrMagnitude()) {
+            // If the opposite normal is pointing more towards the centre of mass of the polygon without the edge
+            // Then that is the correct normal
+            normal = normal * -1;
+        }
+
+        Vec2 rPerp1 = (intersection - obj1.pos).perpendicular();
+        Vec2 rPerp2 = (intersection - obj2.pos).perpendicular();
+
+        float e = 1;
+        float impulse = calculate_impulse(obj1, obj2, rPerp1, rPerp2, normal, e);
+
+        obj1.vel = obj1.vel + normal * impulse / obj1.mass;
+        obj1.angVel = obj1.angVel + (rPerp1 * (normal * impulse)) / obj1.momentOfInertia;
+
+        obj2.vel = obj2.vel - normal * impulse / obj2.mass;
+        // Assumption
+        obj2.angVel = obj2.angVel - (rPerp2 * (normal * impulse)) / obj2.momentOfInertia;
     }
 }

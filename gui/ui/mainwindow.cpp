@@ -60,8 +60,10 @@ void MainWindow::on_testButton_pressed() {
 }
 
 void MainWindow::on_stepButton_pressed() {
-    physics::Vec2 start1 = {0, 0};
+    physics::Vec2 start1 = physics::Vec2(1, 2);
     physics::Vec2 end1 = {1, 1};
+
+    start1.perpendicular();
 
     physics::Vec2 start2 = {0.5, 0.5};
     physics::Vec2 end2 = {1.5, 0.5};
@@ -73,7 +75,7 @@ void MainWindow::on_stepButton_pressed() {
     physics::Vec2 end4 = {1, 3};
 
     physics::Vec2 out;
-    bool ret = physics::intersection(start1, end1, start2, end2, out);
+    /*bool ret = physics::intersection(start1, end1, start2, end2, out);
     printf("%d\n", ret);
     if (ret) {
         printf("x: %f, y: %f\n", out.x, out.y);
@@ -83,7 +85,7 @@ void MainWindow::on_stepButton_pressed() {
     printf("%d\n", ret2);
     if (ret2) {
         printf("x: %f, y: %f\n", out.x, out.y);
-    }
+    }*/
 
     float timestep = 1e-4f;
     bool ok = true;

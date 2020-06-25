@@ -26,7 +26,9 @@ namespace physics {
         std::vector<Vec2> axes;
         AABB aabb;
 
-        static void handle_collision(Polygon& obj1, Polygon& obj2);
+        static void handle_collision(Polygon &obj1, Polygon &obj2);
+
+        static void handle_collision_alt(Polygon &obj1, Polygon &obj2);
     };
 }
 
