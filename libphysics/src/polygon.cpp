@@ -1,6 +1,7 @@
 #include "physics/shapes/polygon.h"
 
 #include <utility>
+#include <iostream>
 
 namespace physics {
 
@@ -75,14 +76,12 @@ namespace physics {
 
         std::cout << "Collision!!!!";
         // TODO: Find collision point.
-
-
     }
 
     std::vector<Vec2> Polygon::transformedPoints() const {
         Mat2x2 rotMat(rot);
         std::vector<Vec2> transformed(points.size());
-        for (size_t i = 0; i < points.size(), i++) {
+        for (size_t i = 0; i < points.size(); i++) {
             transformed[i] = pos + rotMat * points[i];
         }
         return transformed;
