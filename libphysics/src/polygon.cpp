@@ -1,6 +1,7 @@
 #include "physics/shapes/polygon.h"
 
 #include <utility>
+#include <iostream>
 
 namespace physics {
 
@@ -49,10 +50,14 @@ namespace physics {
     void Polygon::handle_collision(Polygon &obj1, Polygon &obj2) {
         float minIntersection = +INFINITY;
         Vec2 minAxis;
+
+        auto obj1TPoints = obj1.transformedPoints();
+        auto obj2TPoints = obj2.transformedPoints();
+
         for (Vec2 axis: obj1.axes) {
             // For each axis, find projections and checks intersection
-            Projection p1 = obj1.project(axis);
-            Projection p2 = obj2.project(axis);
+            Projection p1 = obj1.project(obj1TPoints, axis);
+            Projection p2 = obj2.project(obj2TPoints, axis);
             if (!p1.intersects(p2)) return;
             float intersection = p1.intersection(p2);
             if (intersection < minIntersection) {
@@ -63,8 +68,8 @@ namespace physics {
 
         for (Vec2 axis: obj2.axes) {
             // For each axis, find projections and checks intersection
-            Projection p1 = obj1.project(axis);
-            Projection p2 = obj2.project(axis);
+            Projection p1 = obj1.project(obj1TPoints, axis);
+            Projection p2 = obj2.project(obj2TPoints, axis);
             if (!p1.intersects(p2)) return;
             float intersection = p1.intersection(p2);
             if (intersection < minIntersection) {
@@ -73,7 +78,7 @@ namespace physics {
             }
         }
 
-        std::cout << "Collision!!!!";
+        std::cout << "Collision!!!!" << std::endl;
         // TODO: Find collision point.
 
 
@@ -82,14 +87,13 @@ namespace physics {
     std::vector<Vec2> Polygon::transformedPoints() const {
         Mat2x2 rotMat(rot);
         std::vector<Vec2> transformed(points.size());
-        for (size_t i = 0; i < points.size(), i++) {
+        for (size_t i = 0; i < points.size(); i++) {
             transformed[i] = pos + rotMat * points[i];
         }
         return transformed;
     }
 
-    Projection Polygon::project(Vec2 axis) const {
-        auto tPoints = transformedPoints();
+    Projection Polygon::project(std::vector<Vec2> tPoints, Vec2 axis) const {
         Projection projection{tPoints[0] * axis, tPoints[0] * axis};
         for (size_t i = 1; i < tPoints.size(); i++) {
             float mag = tPoints[i] * axis;

@@ -18,7 +18,8 @@ namespace physics {
 
     private:
 
-        Projection project(Vec2 axis) const;
+        Projection project(std::vector<Vec2> tPoints, Vec2 axis) const;
+
         std::vector<Vec2> transformedPoints() const;
 
         std::vector<Vec2> points;
