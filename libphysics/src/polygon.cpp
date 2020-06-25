@@ -80,8 +80,6 @@ namespace physics {
 
         std::cout << "Collision!!!!" << std::endl;
         // TODO: Find collision point.
-
-
     }
 
     std::vector<Vec2> Polygon::transformedPoints() const {
