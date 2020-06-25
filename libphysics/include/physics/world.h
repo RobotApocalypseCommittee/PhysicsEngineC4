@@ -16,7 +16,7 @@ namespace physics {
     private:
         std::vector<std::shared_ptr<Object>> objects;
     };
-};
+}
 
 
 #endif //PHYSICS_C4_WORLD_H

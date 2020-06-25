@@ -10,16 +10,26 @@ namespace physics {
     public:
         virtual AABB getAABB() const = 0;
 
+        void addForce(Vec2 force);
+        void addTorque(float torque);
+
+        // Point in global space
+        void addForceAtPoint(Vec2 force, Vec2 point);
+
+        // Translational
         Vec2 pos;
         Vec2 vel;
-        Vec2 acc;
-        Vec2 force;
+
+        Vec2 force; // Per iteration
+
+        // Rotational
+        float rot; // Do we store the matrix as well?
+        float angVel;
+        float torque;
+
+
         float mass;
         float momentOfInertia;
-        float angVel;
-    protected:
-
-        unsigned int id;
     };
 
 }
