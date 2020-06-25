@@ -34,6 +34,8 @@ namespace physics {
 
     struct Mat2x2 {
         float a, b, c, d;
+        explicit Mat2x2(float angle);
+        Vec2 operator* (Vec2 v) const;
     };
 
     struct AABB {
@@ -42,6 +44,11 @@ namespace physics {
         bool intersects(AABB other) const;
     };
 
+    struct Projection {
+        float min, max;
+        bool intersects(Projection other) const;
+        float intersection(Projection other) const;
+    };
 };
 
 #endif //PHYSICS_C4_CORE_H

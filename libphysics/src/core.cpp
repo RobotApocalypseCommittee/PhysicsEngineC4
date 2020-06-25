@@ -66,4 +66,22 @@ namespace physics {
     bool AABB::intersects(const AABB other) const {
         return !(other.max.x < min.x || other.min.x > max.x || other.max.y < min.y || other.min.y > max.y);
     }
+
+    Mat2x2::Mat2x2(float angle) {
+        a = d = std::cosf(angle);
+        c = std::sinf(angle);
+        b = -c;
+    }
+
+    Vec2 Mat2x2::operator*(Vec2 v) const {
+        return {a * v.x + b * v.y, c * v.x + d * v.y};
+    }
+
+    bool Projection::intersects(Projection other) const {
+        return min <= other.max && other.min <= max;
+    }
+
+    float Projection::intersection(Projection other) const {
+        return std::min(max, other.max) - std::max(min, other.min);
+    }
 }
