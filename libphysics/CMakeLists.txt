@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(libphysics-c4 LANGUAGES CXX)
 
-add_library(libphysics-c4 src/main.cpp src/collision.cpp src/core.cpp src/world.cpp src/circle.cpp src/object.cpp)
+add_library(libphysics-c4 src/main.cpp src/collision.cpp src/core.cpp src/world.cpp src/circle.cpp src/object.cpp src/polygon.cpp)
 
 add_library(PhysicsEngineC4::physics ALIAS libphysics-c4)
 

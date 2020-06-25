@@ -27,9 +27,11 @@ namespace physics {
         float angVel;
         float torque;
 
-
         float mass;
         float momentOfInertia;
+
+        // From pos (COM) to user-prefered reference point
+        Vec2 offset;
     };
 
 }
