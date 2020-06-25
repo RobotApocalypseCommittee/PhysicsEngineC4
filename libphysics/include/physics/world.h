@@ -13,7 +13,6 @@ namespace physics {
 
         void step(float deltaTime);
 
-    private:
         std::vector<std::shared_ptr<Object>> objects;
     };
 }

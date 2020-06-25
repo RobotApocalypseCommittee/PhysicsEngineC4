@@ -1,5 +1,6 @@
 #include <QLineEdit>
 #include <QErrorMessage>
+#include <QGraphicsScene>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -10,10 +11,18 @@
 #include "physics/collision.h"
 #include "physics/world.h"
 
+
+
+QGraphicsScene *scene;
+
+
 MainWindow::MainWindow(QWidget *parent) :
         QMainWindow(parent),
         ui(new Ui::MainWindow) {
     ui->setupUi(this);
+    scene = new QGraphicsScene(this);
+    ui->graphicsView->setScene(scene);
+
 }
 
 MainWindow::~MainWindow() {
@@ -75,6 +84,23 @@ void MainWindow::on_stepButton_pressed() {
         //printf("circle 1 Pos: x: %f, y: %f\n", circ1->pos.x, circ1->pos.y);
         //printf("circle 2 Pos: x: %f, y: %f\n\n", circ2->pos.x, circ2->pos.y);
     }
+
+    QBrush redBrush(Qt::red);
+    QPen blackPen(Qt::black);
+    blackPen.setWidth(1);
+    scene->clear();
+    int object_count = world->objects.size();
+
+    for (int i = 0; i < object_count; i++) {
+        auto object = world->objects[i];
+        // Assumes objects are circles, will need to be changed when they can not be
+        physics::Circle  circle = *std::dynamic_pointer_cast<const physics::Circle>(object);
+        printf("circle 2 Pos: x: %f, y: %f\n\n", circle.pos.x, circle.pos.y);
+        auto ellipse = scene->addEllipse((object->pos.x-circle.radius)*10, -(object->pos.y+circle.radius)*10, circle.radius*20, circle.radius*20, blackPen, redBrush);
+    }
+
+
+
 
     threading::SafeQueue<int> t{};
     t.enqueue(1);
