@@ -26,6 +26,7 @@ private slots:
 private:
     physics::World *world;
     Ui::MainWindow *ui;
+
 };
 
 #endif // MAINWINDOW_H
