@@ -46,9 +46,13 @@ namespace physics {
 
     struct Projection {
         float min, max;
+
         bool intersects(Projection other) const;
+
         float intersection(Projection other) const;
     };
+
+    bool intersection(Vec2 start1, Vec2 end1, Vec2 start2, Vec2 end2, Vec2 &out);
 };
 
 #endif //PHYSICS_C4_CORE_H
