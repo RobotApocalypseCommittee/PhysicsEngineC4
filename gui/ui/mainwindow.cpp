@@ -10,6 +10,7 @@
 #include "physics/shapes/circle.h"
 #include "physics/collision.h"
 #include "physics/world.h"
+#include "physics/core.h"
 
 
 
@@ -68,6 +69,31 @@ void MainWindow::on_testButton_pressed() {
 }
 
 void MainWindow::on_stepButton_pressed() {
+    physics::Vec2 start1 = {0, 0};
+    physics::Vec2 end1 = {1, 1};
+
+    physics::Vec2 start2 = {0.5, 0.5};
+    physics::Vec2 end2 = {1.5, 0.5};
+
+    physics::Vec2 start3 = {0, 0};
+    physics::Vec2 end3 = {0, 2};
+
+    physics::Vec2 start4 = {-1, 3};
+    physics::Vec2 end4 = {1, 3};
+
+    physics::Vec2 out;
+    bool ret = physics::intersection(start1, end1, start2, end2, out);
+    printf("%d\n", ret);
+    if (ret) {
+        printf("x: %f, y: %f\n", out.x, out.y);
+    }
+
+    bool ret2 = physics::intersection(start3, end3, start4, end4, out);
+    printf("%d\n", ret2);
+    if (ret2) {
+        printf("x: %f, y: %f\n", out.x, out.y);
+    }
+
     float timestep = 1e-4f;
     bool ok = true;
     int steps = findChild<QLineEdit *>("stepsLineEdit")->text().toInt(&ok);
