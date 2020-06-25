@@ -4,6 +4,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "../threading/safequeue.h"
+
 #include "physics/shapes/circle.h"
 #include "physics/collision.h"
 #include "physics/world.h"
@@ -73,4 +75,8 @@ void MainWindow::on_stepButton_pressed() {
         //printf("circle 1 Pos: x: %f, y: %f\n", circ1->pos.x, circ1->pos.y);
         //printf("circle 2 Pos: x: %f, y: %f\n\n", circ2->pos.x, circ2->pos.y);
     }
+
+    threading::SafeQueue<int> t{};
+    t.enqueue(1);
+    printf("%d", t.dequeue());
 }
