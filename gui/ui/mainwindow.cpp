@@ -11,7 +11,7 @@
 #include "physics/collision.h"
 #include "physics/world.h"
 #include "physics/core.h"
-
+#include "ShapePropertiesModel.h"
 
 
 QGraphicsScene *scene;
@@ -21,8 +21,14 @@ MainWindow::MainWindow(QWidget *parent) :
         QMainWindow(parent),
         ui(new Ui::MainWindow) {
     ui->setupUi(this);
+    actionGroup = new QActionGroup(this);
+    actionGroup->addAction(ui->actionCircle);
+    actionGroup->addAction(ui->actionTriangle);
+    actionGroup->setExclusionPolicy(QActionGroup::ExclusionPolicy::ExclusiveOptional);
     scene = new QGraphicsScene(this);
     ui->graphicsView->setScene(scene);
+    ui->propertiesView->verticalHeader()->hide();
+    ui->propertiesView->horizontalHeader()->hide();
 
 }
 
@@ -133,4 +139,24 @@ void MainWindow::on_stepButton_pressed() {
     threading::SafeQueue<int> t{};
     t.enqueue(1);
     printf("%d", t.dequeue());
+}
+
+void MainWindow::on_actionTriangle_triggered() {
+    currentCreation = ShapeCreationType::Triangle;
+    auto newModel = new ShapePropertiesModel<TriangleShapeProperties>;
+    switchPropertiesModel(newModel);
+}
+
+void MainWindow::on_actionCircle_triggered() {
+    currentCreation = ShapeCreationType::Circle;
+    auto newModel = new ShapePropertiesModel<CircleShapeProperties>;
+    switchPropertiesModel(newModel);
+}
+
+void MainWindow::switchPropertiesModel(QAbstractTableModel *model) {
+    auto* oldModel = ui->propertiesView->model();
+    ui->propertiesView->setModel(model);
+    delete oldModel;
+    ui->propertiesView->resizeColumnsToContents();
+    ui->propertiesView->horizontalHeader()->setStretchLastSection(true);
 }
