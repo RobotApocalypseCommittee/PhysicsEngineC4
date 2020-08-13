@@ -25,6 +25,8 @@ public:
 
     ~MainWindow();
 
+    void viewClicked(QPointF pos);
+
 private slots:
 
     void on_testButton_pressed();
@@ -36,6 +38,7 @@ private slots:
 
 private:
     void switchPropertiesModel(QAbstractTableModel* model);
+
     physics::World *world;
     QActionGroup *actionGroup;
     Ui::MainWindow *ui;

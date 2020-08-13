@@ -1,6 +1,8 @@
 #include <QLineEdit>
 #include <QErrorMessage>
 #include <QGraphicsScene>
+#include <QGraphicsEllipseItem>
+#include <QGraphicsPolygonItem>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -12,6 +14,7 @@
 #include "physics/world.h"
 #include "physics/core.h"
 #include "ShapePropertiesModel.h"
+#include "GraphicsScene.h"
 
 
 QGraphicsScene *scene;
@@ -25,7 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
     actionGroup->addAction(ui->actionCircle);
     actionGroup->addAction(ui->actionTriangle);
     actionGroup->setExclusionPolicy(QActionGroup::ExclusionPolicy::ExclusiveOptional);
-    scene = new QGraphicsScene(this);
+    scene = new GraphicsScene(this);
     ui->graphicsView->setScene(scene);
     ui->propertiesView->verticalHeader()->hide();
     ui->propertiesView->horizontalHeader()->hide();
@@ -143,13 +146,13 @@ void MainWindow::on_stepButton_pressed() {
 
 void MainWindow::on_actionTriangle_triggered() {
     currentCreation = ShapeCreationType::Triangle;
-    auto newModel = new ShapePropertiesModel<TriangleShapeProperties>;
+    auto newModel = ShapePropertiesModel::create<RegularShapeProperties>();
     switchPropertiesModel(newModel);
 }
 
 void MainWindow::on_actionCircle_triggered() {
     currentCreation = ShapeCreationType::Circle;
-    auto newModel = new ShapePropertiesModel<CircleShapeProperties>;
+    auto newModel = ShapePropertiesModel::create<RegularShapeProperties>();
     switchPropertiesModel(newModel);
 }
 
@@ -159,4 +162,30 @@ void MainWindow::switchPropertiesModel(QAbstractTableModel *model) {
     delete oldModel;
     ui->propertiesView->resizeColumnsToContents();
     ui->propertiesView->horizontalHeader()->setStretchLastSection(true);
+}
+
+void MainWindow::viewClicked(QPointF pos) {
+    auto model = dynamic_cast<ShapePropertiesModel*>(ui->propertiesView->model());
+    if (model != nullptr) {
+        // Time to create a circle!!!
+        // Bad
+        auto props = RegularShapeProperties(model->getProperties());
+        switch(currentCreation) {
+            case ShapeCreationType::Circle: {
+                auto *circle = scene->addEllipse(0, 0, 2 * props.radius, 2 * props.radius);
+                circle->setPos(pos);
+            }
+                break;
+            case ShapeCreationType::None:
+                break;
+            case ShapeCreationType::Triangle: {
+                QPolygonF triShape;
+                float side = 2 * props.radius * cosf(PI / 6.0);
+                triShape << QPointF(0, 0) << QPointF(side * sinf(PI / 6.0), side * cosf(PI / 6.0)) << QPointF(side, 0);
+                auto *triangle = scene->addPolygon(triShape);
+                triangle->setPos(pos);
+            }
+                break;
+        }
+    }
 }

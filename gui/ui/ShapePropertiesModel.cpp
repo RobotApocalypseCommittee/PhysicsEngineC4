@@ -25,9 +25,60 @@ bool updatePropertyFromQVariant(PropertyVariant& variant, const QVariant &source
     return ok;
 }
 
-const std::array<PropertyField, 3> TriangleShapeProperties::propertyList = {PropertyField{"noot", 6},
-                                        PropertyField{"zoot", "doot"},
-                                        PropertyField{"Harold", 7.5f}};
+const std::array<PropertyField, 2> RegularShapeProperties::propertyList = { PropertyField{"radius", 1.0f},
+                                                                            PropertyField{"mass", 1.0f}};
 
-const std::array<PropertyField, 2> CircleShapeProperties::propertyList = {PropertyField{"john", "knows"},
-                                                                          PropertyField{"sam", "clueless"}};
+RegularShapeProperties::RegularShapeProperties(std::unordered_map<std::string, PropertyVariant> properties) {
+    radius = std::get<float>(properties.at("radius"));
+    mass = std::get<float>(properties.at("mass"));
+}
+
+int ShapePropertiesModel::rowCount(const QModelIndex &parent) const {
+    return (int) properties.size();
+}
+
+int ShapePropertiesModel::columnCount(const QModelIndex &parent) const {
+    return 2;
+}
+
+QVariant ShapePropertiesModel::data(const QModelIndex &index, int role) const {
+    if (!index.isValid() || index.row() >= properties.size()) {
+        return QVariant();
+    }
+    if (index.column() == 1) {
+        if (role == Qt::DisplayRole || role == Qt::EditRole) {
+            return getPropertyOutput(properties[index.row()].value);
+        }
+    } else {
+        if (role == Qt::DisplayRole) {
+            return QString::fromStdString(properties[index.row()].name);
+        }
+    }
+    return QVariant();
+}
+
+bool ShapePropertiesModel::setData(const QModelIndex &index, const QVariant &value, int role) {
+    if (index.isValid() && role == Qt::EditRole && index.column() == 1 && index.row() < properties.size()) {
+
+        if (!updatePropertyFromQVariant(properties[index.row()].value, value)) return false;
+        std::cout << "Doing";
+        emit dataChanged(index, index, {role});
+        return true;
+    }
+    return false;
+}
+
+Qt::ItemFlags ShapePropertiesModel::flags(const QModelIndex &index) const {
+    if (!index.isValid()) {
+        return Qt::ItemIsEnabled;
+    }
+    return QAbstractTableModel::flags(index) | (index.column() == 1 ? Qt::ItemIsEditable : 0);
+}
+
+std::unordered_map<std::string, PropertyVariant> ShapePropertiesModel::getProperties() const {
+    std::unordered_map<std::string, PropertyVariant> result;
+    for (auto& prop: properties) {
+        result.insert(std::make_pair(prop.name, prop.value));
+    }
+    return result;
+}
