@@ -26,13 +26,15 @@ namespace physics {
         Vec2 rPerp2 = (point - obj2.pos).perpendicular();
 
         float impulse = calculate_impulse(obj1, obj2, rPerp1, rPerp2, normal, e);
-
-        obj1.vel = obj1.vel + normal * impulse / obj1.mass;
-        obj1.angVel = obj1.angVel + (rPerp1 * (normal * impulse)) / obj1.momentOfInertia;
-
-        obj2.vel = obj2.vel - normal * impulse / obj2.mass;
-        // Assumption
-        obj2.angVel = obj2.angVel - (rPerp2 * (normal * impulse)) / obj2.momentOfInertia;
+        if (!obj1.unmoveable) {
+            obj1.vel = obj1.vel + normal * impulse / obj1.mass;
+            obj1.angVel = obj1.angVel + (rPerp1 * (normal * impulse)) / obj1.momentOfInertia;
+        }
+        if (!obj2.unmoveable) {
+            obj2.vel = obj2.vel - normal * impulse / obj2.mass;
+            // Assumption
+            obj2.angVel = obj2.angVel - (rPerp2 * (normal * impulse)) / obj2.momentOfInertia;
+        }
     }
 
     float calculate_impulse(Object &obj1, Object &obj2, Vec2 rPerp1, Vec2 rPerp2, Vec2 normal, float e) {

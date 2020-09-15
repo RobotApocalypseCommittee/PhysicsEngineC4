@@ -9,11 +9,17 @@
 namespace physics {
     class World {
     public:
-        void addObject(const std::shared_ptr<Object> &o);
+        void addObject(std::shared_ptr<Object> o);
+
+        bool removeObject(const std::shared_ptr<Object> &o);
+
+        void setGravity(Vec2 g_acceleration);
 
         void step(float deltaTime);
 
         std::vector<std::shared_ptr<Object>> objects;
+    private:
+        Vec2 m_gravity;
     };
 }
 

@@ -10,11 +10,18 @@ namespace physics {
     public:
         virtual AABB getAABB() const = 0;
 
+        // Invalidate cached data
+        virtual void invalidate() = 0;
+
         void addForce(Vec2 force);
+
         void addTorque(float torque);
 
         // Point in global space
         void addForceAtPoint(Vec2 force, Vec2 point);
+
+        // Simulation-stuff
+        bool unmoveable{false};
 
         // Translational
         Vec2 pos;

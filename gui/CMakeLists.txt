@@ -11,7 +11,7 @@ add_executable(gui-c4
         ui/main.cpp
         ui/mainwindow.cpp
         ui/mainwindow.ui
-        ui/ShapePropertiesModel.cpp ui/ShapePropertiesModel.h ui/GraphicsScene.cpp ui/GraphicsScene.h)
+        ui/ShapePropertiesModel.cpp ui/ShapePropertiesModel.h ui/GraphicsScene.cpp ui/GraphicsScene.h ui/ShapeManager.h ui/ShapeManager.cpp ui/properties.h)
 
 target_link_libraries(gui-c4 Qt5::Core Qt5::Gui Qt5::Widgets PhysicsEngineC4::physics)
 

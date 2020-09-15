@@ -3,18 +3,29 @@
 
 namespace physics {
 
-    void World::addObject(const std::shared_ptr<Object> &o) {
-        objects.push_back(o);
+void World::addObject(std::shared_ptr<Object> o) {
+    objects.push_back(std::move(o));
+}
+
+bool World::removeObject(const std::shared_ptr<Object> &o) {
+    auto it = std::find(objects.begin(), objects.end(), o);
+
+    if (it != objects.end()) {
+        objects.erase(it);
+        return true;
     }
+    return false;
+}
 
-    void World::step(float deltaTime) {
-        // TODO deal with forces
+void World::step(float deltaTime) {
+    // TODO deal with forces
 
-        for (const std::shared_ptr<Object> &object : objects) {
-            //Calculate acceleration from resultant force - Newton 2
-            Vec2 acceleration = object->force / object->mass;
+    for (const std::shared_ptr<Object> &object : objects) {
+        if (object->unmoveable) continue;
+        //Calculate acceleration from resultant force - Newton 2
+        Vec2 acceleration = object->force / object->mass + m_gravity;
 
-            // suvat
+        // suvat
             object->pos += object->vel * deltaTime + acceleration * deltaTime * deltaTime * 0.5f;
 
             // if we had accel, change velocity with v = u + at
@@ -51,6 +62,10 @@ namespace physics {
                 }
             }
         }
-    }
+}
+
+void World::setGravity(Vec2 g_acceleration) {
+    m_gravity = g_acceleration;
+}
 }
 

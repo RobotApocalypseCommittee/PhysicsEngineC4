@@ -6,16 +6,11 @@
 #include <QtCore/QAbstractTableModel>
 
 #include "physics/world.h"
+#include "ShapeManager.h"
 
 namespace Ui {
     class MainWindow;
 }
-
-enum class ShapeCreationType {
-    None,
-    Circle,
-    Triangle
-};
 
 class MainWindow : public QMainWindow {
 Q_OBJECT
@@ -29,20 +24,22 @@ public:
 
 private slots:
 
-    void on_testButton_pressed();
-
     void on_stepButton_pressed();
 
     void on_actionTriangle_triggered();
+
     void on_actionCircle_triggered();
 
-private:
-    void switchPropertiesModel(QAbstractTableModel* model);
+    void on_sceneselection_changed();
 
-    physics::World *world;
+private:
+    void switchShape(std::shared_ptr<ShapeConstruct> shape);
+
+    std::shared_ptr<physics::World> world;
     QActionGroup *actionGroup;
     Ui::MainWindow *ui;
-    ShapeCreationType currentCreation = ShapeCreationType::None;
+    std::shared_ptr<ShapeConstruct> currentShape;
+    std::vector<std::shared_ptr<ShapeConstruct>> shapes;
 
 };
 

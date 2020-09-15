@@ -34,10 +34,11 @@ namespace physics {
         return std::make_shared<Polygon>(points, aabb, reference);
     }
 
-    Polygon::Polygon(std::vector<Vec2> points, AABB aabb, Vec2 offset) : points(std::move(points)), aabb(aabb), axes(points.size() - 1) {
+    Polygon::Polygon(std::vector<Vec2> t_points, AABB aabb, Vec2 offset) : points(std::move(t_points)), aabb(aabb),
+                                                                           axes(points.size() - 1) {
         // Pre-init axes
         for (size_t i = 0; i < (points.size() - 1); i++) {
-            axes[i] = (points[i+1] - points[i]).perpendicular().normalized();
+            axes[i] = (points[i + 1] - points[i]).perpendicular().normalized();
         }
     }
 
@@ -52,13 +53,10 @@ namespace physics {
         float minIntersection = +INFINITY;
         Vec2 minAxis;
 
-        auto obj1TPoints = obj1.transformedPoints();
-        auto obj2TPoints = obj2.transformedPoints();
-
         for (Vec2 axis: obj1.axes) {
             // For each axis, find projections and checks intersection
-            Projection p1 = obj1.project(obj1TPoints, axis);
-            Projection p2 = obj2.project(obj2TPoints, axis);
+            Projection p1 = obj1.project(axis);
+            Projection p2 = obj2.project(axis);
             if (!p1.intersects(p2)) return;
             float intersection = p1.intersection(p2);
             if (intersection < minIntersection) {
@@ -69,8 +67,8 @@ namespace physics {
 
         for (Vec2 axis: obj2.axes) {
             // For each axis, find projections and checks intersection
-            Projection p1 = obj1.project(obj1TPoints, axis);
-            Projection p2 = obj2.project(obj2TPoints, axis);
+            Projection p1 = obj1.project(axis);
+            Projection p2 = obj2.project(axis);
             if (!p1.intersects(p2)) return;
             float intersection = p1.intersection(p2);
             if (intersection < minIntersection) {
@@ -83,26 +81,29 @@ namespace physics {
         // TODO: Find collision point.
     }
 
-    std::vector<Vec2> Polygon::transformedPoints() const {
+std::vector<Vec2> &Polygon::transformedPoints() const {
+    if (!tranformedPointsValid) {
         Mat2x2 rotMat(rot);
-        std::vector<Vec2> transformed(points.size());
         for (size_t i = 0; i < points.size(); i++) {
-            transformed[i] = pos + rotMat * points[i];
+            _transformedPoints[i] = pos + rotMat * points[i];
         }
-        return transformed;
+        tranformedPointsValid = true;
     }
+    return _transformedPoints;
+}
 
-    Projection Polygon::project(std::vector<Vec2> tPoints, Vec2 axis) const {
-        Projection projection{tPoints[0] * axis, tPoints[0] * axis};
-        for (size_t i = 1; i < tPoints.size(); i++) {
-            float mag = tPoints[i] * axis;
-            if (mag < projection.min) {
-                projection.min = mag;
-            } else if (mag > projection.max) {
-                projection.max = mag;
-            }
+Projection Polygon::project(Vec2 axis) const {
+    auto &tPoints = transformedPoints();
+    Projection projection{tPoints[0] * axis, tPoints[0] * axis};
+    for (size_t i = 1; i < tPoints.size(); i++) {
+        float mag = tPoints[i] * axis;
+        if (mag < projection.min) {
+            projection.min = mag;
+        } else if (mag > projection.max) {
+            projection.max = mag;
         }
-        return projection;
+    }
+    return projection;
     }
 
     void Polygon::handle_collision_alt(Polygon &obj1, Polygon &obj2) {
@@ -195,4 +196,8 @@ namespace physics {
         // Assumption
         obj2.angVel = obj2.angVel - (rPerp2 * (normal * impulse)) / obj2.momentOfInertia;
     }
+
+void Polygon::invalidate() {
+    tranformedPointsValid = false;
+}
 }

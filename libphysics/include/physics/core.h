@@ -3,6 +3,7 @@
 #define PHYSICS_C4_CORE_H
 
 #define M_PI 3.14159265358979323846
+constexpr double PI = M_PI;
 
 namespace physics {
 

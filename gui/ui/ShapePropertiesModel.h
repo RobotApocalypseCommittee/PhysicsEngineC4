@@ -1,38 +1,49 @@
 #ifndef PHYSICS_C4_SHAPEPROPERTIESMODEL_H
 #define PHYSICS_C4_SHAPEPROPERTIESMODEL_H
+
 #include <QAbstractTableModel>
-#include <array>
 #include <variant>
 #include <iostream>
+#include "properties.h"
+#include "span.hpp"
 
-using PropertyVariant = std::variant<std::string, float, int>;
+class ShapeConstruct;
 
-QVariant getPropertyOutput(const PropertyVariant& v);
-bool updatePropertyFromQVariant(PropertyVariant& variant, const QVariant &source);
+QVariant getPropertyOutput(const PropertyValue &v);
 
-struct PropertyField {
-    std::string name;
-    // Also determines type
-    PropertyVariant value;
+
+class Properties {
+public:
+    PropertyValue get(int index) const;
+
+    std::string_view getName(int index) const;
+
+    void set(int index, PropertyValue value);
+
+    bool set(int index, const QVariant &variant);
+
+    // I am so very very sad about this compromise
+    virtual int getCount() const = 0;
+
+protected:
+    virtual Property &getProperty(int i) = 0;
+
+    virtual const Property &getProperty(int i) const;
 };
 
-class RegularShapeProperties {
+class RegularShapeProperties : public Properties {
 public:
-    static const std::array<PropertyField, 2> propertyList;
+    PropertyField<PropertyFieldID::Mass> mass = 1;
+    PropertyField<PropertyFieldID::Radius> radius = 1;
+private:
+    int getCount() const override;
 
-    float radius;
-    float mass;
-
-    explicit RegularShapeProperties(std::unordered_map<std::string, PropertyVariant> properties);
+    Property &getProperty(int i) override;
 };
 
 class ShapePropertiesModel: public QAbstractTableModel {
 public:
-
-    template<typename T>
-    static ShapePropertiesModel* create(QObject* parent = nullptr) {
-        return new ShapePropertiesModel(parent, T::propertyList.begin(), T::propertyList.end());
-    }
+    ShapePropertiesModel(QObject *parent, ShapeConstruct &construct);
 
     int rowCount(const QModelIndex &parent) const override;
 
@@ -40,19 +51,12 @@ public:
 
     QVariant data(const QModelIndex &index, int role) const override;
 
-    std::unordered_map<std::string, PropertyVariant> getProperties() const;
-
     bool setData(const QModelIndex &index, const QVariant &value, int role) override;
 
     Qt::ItemFlags flags(const QModelIndex &index) const override;
 
 private:
-
-    template<typename Iter>
-    ShapePropertiesModel(QObject *parent, Iter begin, Iter end) : QAbstractTableModel(parent),
-    properties(begin, end) {};
-
-    std::vector<PropertyField> properties;
+    ShapeConstruct &m_shape;
 };
 
 

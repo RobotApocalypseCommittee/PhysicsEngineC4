@@ -3,5 +3,6 @@
 #include "mainwindow.h"
 
 void GraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
-    dynamic_cast<MainWindow*>(parent())->viewClicked(event->scenePos());
+    dynamic_cast<MainWindow *>(parent())->viewClicked(event->scenePos());
+    QGraphicsScene::mouseReleaseEvent(event);
 }
